@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Kolo Board
+Comment=A shared board for a team, built with Kolo
+Exec=kolo-board %u
+Icon=kolo-board
+Terminal=false
+Categories=Network;Office;ProjectManagement;
+StartupWMClass=kolo-board
