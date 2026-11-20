@@ -25,7 +25,7 @@ Run it on a host every member reaches: a public IPv4 address, such as a VPS, or 
 Install kolo-node (in `$(go env GOPATH)/bin`, which must be on your `PATH`).
 
 ```sh
-go install github.com/ciranda-dev/kolo-node/cmd/kolo-node@v0.1.3
+go install github.com/ciranda-dev/kolo-node/cmd/kolo-node@v0.1.0
 ```
 
 The first entry node. It creates its key file with mode 0600 on the first run and keeps it for the next runs.

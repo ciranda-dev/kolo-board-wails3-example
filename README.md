@@ -22,9 +22,9 @@
 
 | Platform | Install | Version | Status |
 |---|---|---|---|
-| macOS (universal) | `.dmg` or `.zip` | v0.1.3 | Beta, unsigned |
-| Windows (amd64, arm64) | installer `.exe`, `.exe` or `.zip` | v0.1.3 | Beta, unsigned |
-| Linux (amd64, arm64) | `.deb` or `.tar.gz` | v0.1.3 | Beta, unsigned |
+| macOS (universal) | `.dmg` or `.zip` | v0.1.0 | Beta, unsigned |
+| Windows (amd64, arm64) | installer `.exe`, `.exe` or `.zip` | v0.1.0 | Beta, unsigned |
+| Linux (amd64, arm64) | `.deb` or `.tar.gz` | v0.1.0 | Beta, unsigned |
 
 Get the files from the [latest release](https://github.com/ciranda-dev/kolo-board-wails3-example/releases), with `SHA256SUMS` to check them. They are not signed or notarized, so the system warns before the first run. Build your own with `scripts/release-local.sh` (see [build and test](docs/build-and-test.md)).
 
@@ -71,7 +71,7 @@ If the public network cannot be reached when the example starts (no internet, no
 Computer A and B, once: install kolo-node (in `$(go env GOPATH)/bin`, which must be on your `PATH`).
 
 ```sh
-go install github.com/ciranda-dev/kolo-node/cmd/kolo-node@v0.1.3
+go install github.com/ciranda-dev/kolo-node/cmd/kolo-node@v0.1.0
 ```
 
 Computer A, terminal 1: the entry node on UDP port 7447. It creates its key file on the first run.
