@@ -494,32 +494,21 @@ func TestBoardWaitsForAnotherMemberAfterARestart(t *testing.T) {
 	}
 }
 
-func TestTooManyInvites(t *testing.T) {
+// The active invites have no bound: more than the 32 topics kolo-swarm used to hold are all created and listed.
+func TestManyActiveInvites(t *testing.T) {
 	p := startPeer(t, "Ana", Config{}, nil)
 	if _, err := p.CreateBoard("Launch", nil); err != nil {
 		t.Fatal(err)
 	}
-	for range maxActiveInvites {
+	const many = 40
+	for range many {
 		if _, err := p.CreateInvite(mainCtx, InviteOptions{TTLSeconds: 3600}); err != nil {
 			t.Fatal(err)
 		}
 	}
-	if _, err := p.CreateInvite(mainCtx, InviteOptions{TTLSeconds: 3600}); explain(err).Reason != "too-many-invites" {
-		t.Errorf("one more than the swarm has topics for: %v", err)
-	}
 	list, _ := p.Invites()
-	if len(list) != maxActiveInvites {
-		t.Errorf("%d invites", len(list))
-	}
-	// revoking one makes room
-	if err := p.RevokeInvite(list[0].ID); err != nil {
-		t.Fatal(err)
-	}
-	if _, err := p.CreateInvite(mainCtx, InviteOptions{TTLSeconds: 3600}); err != nil {
-		t.Errorf("after a revoke: %v", err)
-	}
-	if maxActiveInvites+2 > swarmTopics {
-		t.Error("the invites and the board's topics do not fit the swarm")
+	if len(list) != many {
+		t.Errorf("%d invites, want %d", len(list), many)
 	}
 }
 

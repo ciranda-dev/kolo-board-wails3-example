@@ -20,14 +20,10 @@ import (
 	kolostore "github.com/ciranda-dev/kolo-store"
 )
 
-// Bounds of an invite, each from a library. The lifetime is the caller's (kolo-invite: zero never expires, so the window must
-// give one); the people an invite takes default to one (kolo-invite CreateOptions.MaxUses: zero means 1) and are at most the
-// members a braid holds by default (kolo-braid docs/limits.md:12 MaxMembers). Every active invite takes a topic of the
-// swarm, which holds swarmTopics, with the board's own and a join's.
-const (
-	maxInviteUses    = defaultMaxMembers
-	maxActiveInvites = swarmTopics - 2
-)
+// maxInviteUses is the most people one invite takes, the app's own bound. The lifetime is the caller's (kolo-invite: zero
+// never expires, so the window must give one) and the people default to one (kolo-invite CreateOptions.MaxUses: zero means
+// 1). The active invites have no bound: each one is announced, as kolo-swarm no longer caps its topics.
+const maxInviteUses = 100
 
 // maxActivityPage is the most items one Activity call reads: the window asks for 50, and a call may not make the app
 // read the whole list.
@@ -36,9 +32,6 @@ const maxActivityPage = 200
 // maxPendingRequests is how many requests to join may wait for an admin at once, all invites together: each is a name an
 // admin has to read. kolo-invite's default is 1024.
 const maxPendingRequests = 64
-
-// defaultMaxMembers is kolo-braid's default MaxMembers (GroupConfig, docs/limits.md:12), which the app does not change.
-const defaultMaxMembers = 64
 
 // joinTag starts the join data a joiner sends with its request: its display name.
 const joinTag = "kolo-board/join/v0"
@@ -335,13 +328,6 @@ func (s *BoardService) CreateInvite(ctx context.Context, opts InviteOptions) (In
 	if opts.Uses < 0 || create.MaxUses > maxInviteUses {
 		return InviteInfo{}, boardErr("invite-uses-range", ErrLimit, strconv.Itoa(maxInviteUses))
 	}
-	infos, err := s.inv.List()
-	if err != nil {
-		return InviteInfo{}, explain(err)
-	}
-	if n := countActive(infos); n >= maxActiveInvites {
-		return InviteInfo{}, boardErr("too-many-invites", ErrLimit, strconv.Itoa(n))
-	}
 	code, info, err := s.inv.Create(&create)
 	if err != nil {
 		return InviteInfo{}, explain(err)
@@ -354,15 +340,6 @@ func (s *BoardService) CreateInvite(ctx context.Context, opts InviteOptions) (In
 	out := inviteInfo(info, s.invMeta.get(info.ID))
 	out.Code = code
 	return out, nil
-}
-
-func countActive(infos []invite.Info) (n int) {
-	for _, i := range infos {
-		if i.State == invite.Active {
-			n++
-		}
-	}
-	return n
 }
 
 func inviteInfo(i invite.Info, approval bool) InviteInfo {

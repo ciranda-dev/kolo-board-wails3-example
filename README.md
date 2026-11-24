@@ -145,7 +145,7 @@ Start every copy with the same relay, `host:port@key` with the key as 64 hex cha
 ./bin/kolo-board -bootstrap <ip-of-computer-a>:7447 -relay <relay-host>:7448@<relay-key>
 ```
 
-`-relay` repeats or takes a comma list, `-relay-file` reads one or more relays per line and `KOLO_BOARD_RELAYS` is used when neither flag is given; at most 16. Settings shows each relay's state and which setting gave the list, and a relay listed with a wrong key is reported a few seconds after the start. Commands and ports: [your own servers](docs/own-servers.md).
+`-relay` repeats or takes a comma list, `-relay-file` reads one or more relays per line and `KOLO_BOARD_RELAYS` is used when neither flag is given. Settings shows each relay's state and which setting gave the list, and a relay listed with a wrong key is reported a few seconds after the start. Commands and ports: [your own servers](docs/own-servers.md).
 
 ### With the installed macOS app
 

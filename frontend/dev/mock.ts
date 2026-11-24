@@ -137,7 +137,6 @@ const REASONS: Record<string, [string, string]> = {
   'card-not-found': ['not-found', 'That card is not on the board any more. Someone may have deleted it.'],
   'request-not-found': ['not-found', 'That request is gone: the person left or the invite ended.'],
   'reorder-no-room': ['limit', 'There is no room to put it there. Move it to the start or the end instead.'],
-  'too-many-invites': ['limit', 'You have {detail} active invites. Revoke one or wait for one to expire.'],
   'invite-uses-range': ['limit', 'An invite takes 1 to {detail} people.'],
   'invite-ttl-range': ['limit', 'Choose how long the invite lasts: at least 1 second.'],
   'activity-limit': ['limit', 'Ask for at least 1 item.'],
@@ -797,9 +796,6 @@ export async function RemoveMember(key: string) {
 
 export async function CreateInvite(options: { ttlSeconds: number; uses: number; requireApproval: boolean }) {
   admin()
-  if (invites.filter((x) => x.state === 'active').length >= 16) {
-    reject(boardErr('too-many-invites', '16'))
-  }
   if (!(options.ttlSeconds >= 1)) {
     reject(boardErr('invite-ttl-range'))
   }

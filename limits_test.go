@@ -40,14 +40,8 @@ func TestLimitsComeFromTheirSources(t *testing.T) {
 	if cfg.MaxBody != kolobraid.MaxViewValue {
 		t.Errorf("the default MaxBody is %d, not MaxViewValue: the entry bound must be rechecked", cfg.MaxBody)
 	}
-	if maxInviteUses != cfg.MaxMembers {
-		t.Errorf("invite uses %d, MaxMembers default %d", maxInviteUses, cfg.MaxMembers)
-	}
-	if defaultMaxMembers != cfg.MaxMembers {
-		t.Errorf("defaultMaxMembers %d, library default %d", defaultMaxMembers, cfg.MaxMembers)
-	}
-	if maxActiveInvites != swarmTopics-2 {
-		t.Errorf("active invites %d, swarm topics %d less the board's and a join's", maxActiveInvites, swarmTopics)
+	if cfg.MaxMembers != 0 {
+		t.Errorf("MaxMembers default %d: kolo-braid now has none, and the app sets none", cfg.MaxMembers)
 	}
 	// the largest honest card fits an entry and a view value, and the largest name fits a join request
 	most := op{Kind: opCardAdd, Col: oid{1}, Text: strings.Repeat("\U0010FFFF", maxCardTitleRunes), Desc: strings.Repeat("\U0010FFFF", maxCardDescRunes)}
@@ -115,23 +109,21 @@ func TestSwarmLimitsAreInTheirRanges(t *testing.T) {
 	if err := try(swarmConfig(set)); err != nil {
 		t.Fatalf("the app's swarm config: %v", err)
 	}
-	over := swarmConfig(set)
-	over.MaxTopics = swarmTopics + 1
-	if err := try(over); !errors.Is(err, koloswarm.ErrInvalidConfig) {
-		t.Errorf("one topic past the largest MaxTopics: %v", err)
+	if swarmConfig(set).MaxTopics != 0 {
+		t.Error("the app caps the swarm's topics: every active invite is announced")
 	}
-	over = swarmConfig(set)
+	over := swarmConfig(set)
 	over.RetryMax = time.Hour + 1
 	if err := try(over); !errors.Is(err, koloswarm.ErrInvalidConfig) {
 		t.Errorf("a retry past the largest RetryMax: %v", err)
 	}
 	// the per-address limit must not pass the transport's MaxConns: the value is accepted at MaxConns, refused above it
 	over = swarmConfig(set)
-	over.DHT.Secure.Transport = &kolotransport.Config{MaxConns: defaultMaxMembers, MaxConnsPerIP: defaultMaxMembers}
+	over.DHT.Secure.Transport = &kolotransport.Config{MaxConns: testMaxConns, MaxConnsPerIP: testMaxConns}
 	if err := try(over); err != nil {
 		t.Errorf("the per-address limit at MaxConns: %v", err)
 	}
-	over.DHT.Secure.Transport = &kolotransport.Config{MaxConns: defaultMaxMembers - 1, MaxConnsPerIP: defaultMaxMembers}
+	over.DHT.Secure.Transport = &kolotransport.Config{MaxConns: testMaxConns - 1, MaxConnsPerIP: testMaxConns}
 	if err := try(over); err == nil {
 		t.Error("a per-address limit above MaxConns was accepted")
 	}

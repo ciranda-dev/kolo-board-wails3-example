@@ -3,17 +3,17 @@ module github.com/ciranda-dev/kolo-board-wails3-example
 go 1.26.0
 
 require (
-	github.com/ciranda-dev/kolo-braid v0.1.0
+	github.com/ciranda-dev/kolo-braid v0.1.1
 	github.com/ciranda-dev/kolo-codec v0.1.0
-	github.com/ciranda-dev/kolo-dht v0.1.0
+	github.com/ciranda-dev/kolo-dht v0.1.1
 	github.com/ciranda-dev/kolo-id v0.1.0
-	github.com/ciranda-dev/kolo-invite v0.1.0
-	github.com/ciranda-dev/kolo-relay v0.1.0
-	github.com/ciranda-dev/kolo-secure v0.1.0
+	github.com/ciranda-dev/kolo-invite v0.1.1
+	github.com/ciranda-dev/kolo-relay v0.1.1
+	github.com/ciranda-dev/kolo-secure v0.1.1
 	github.com/ciranda-dev/kolo-store v0.1.0
-	github.com/ciranda-dev/kolo-swarm v0.1.0
-	github.com/ciranda-dev/kolo-sync v0.1.0
-	github.com/ciranda-dev/kolo-transport v0.1.0
+	github.com/ciranda-dev/kolo-swarm v0.1.1
+	github.com/ciranda-dev/kolo-sync v0.1.1
+	github.com/ciranda-dev/kolo-transport v0.1.1
 	github.com/wailsapp/wails/v3 v3.0.0
 )
 
