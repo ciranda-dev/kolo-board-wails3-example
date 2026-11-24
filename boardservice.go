@@ -22,10 +22,6 @@ import (
 	kolotransport "github.com/ciranda-dev/kolo-transport"
 )
 
-// swarmTopics is kolo-swarm's largest MaxTopics (config.go): the board's topic, the topic of a join, and one topic for
-// each active invite share it (see maxActiveInvites).
-const swarmTopics = 32
-
 // testMaxConnsPerIP is a test seam: when not 0 it replaces kolo-transport's 4 connections per source address, so a test
 // can run many apps on 127.0.0.1. The app never sets it.
 var testMaxConnsPerIP int
@@ -437,7 +433,6 @@ func swarmConfig(set settings) *koloswarm.Config {
 	return &koloswarm.Config{
 		BootstrapNodes: set.nodes,
 		LookupInterval: set.LookupInterval,
-		MaxTopics:      swarmTopics,
 		RetryMax:       set.LookupInterval,
 		Relays:         set.relays, // a peer that cannot be reached directly is reached through one, with the same Conn
 		DHT:            &kolodht.Config{Secure: &kolosecure.Config{Transport: &kolotransport.Config{MaxConnsPerIP: testMaxConnsPerIP}}},

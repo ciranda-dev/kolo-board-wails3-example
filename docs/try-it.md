@@ -13,7 +13,7 @@ The README's [Try it](../README.md#try-it) section has the commands, one per blo
 
 The three networks are separate: copies meet only on the same one. The public network is the default: run by Ciranda, free, with no uptime guarantee while Kolo is a beta. `-bootstrap` uses your own entry nodes alone. `-local` serves one computer, and its entry node stops when the example that runs it quits. `-first` runs an entry node of a test network inside a copy, on a loopback address of your choice.
 
-The entry nodes of `-bootstrap` are a list: `-bootstrap` and `KOLO_BOOTSTRAP` take a comma list of `host:port` (IPv4 or a host name, at most 16). Settings shows the network and, for your own network, the list in use and where it came from (it does not list the public entry nodes); it is set only with these flags, not in the window. Kolo Board uses no pin: members sync with each other while they are online. Connection relays are set the same way, with `-relay`, `-relay-file` or `KOLO_BOARD_RELAYS` ([your own servers](own-servers.md#run-a-connection-relay)).
+The entry nodes of `-bootstrap` are a list: `-bootstrap` and `KOLO_BOOTSTRAP` take a comma list of `host:port` (IPv4 or a host name). Settings shows the network and, for your own network, the list in use and where it came from (it does not list the public entry nodes); it is set only with these flags, not in the window. Kolo Board uses no pin: members sync with each other while they are online. Connection relays are set the same way, with `-relay`, `-relay-file` or `KOLO_BOARD_RELAYS` ([your own servers](own-servers.md#run-a-connection-relay)).
 
 To start over, quit the copies, stop kolo-node with Ctrl-C, and delete `/tmp/kolo-board-demo`.
 

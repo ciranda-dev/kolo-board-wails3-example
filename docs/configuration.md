@@ -17,7 +17,7 @@ The example is on one of three networks, chosen when it starts:
 | Flag | Environment | Default | Meaning |
 |---|---|---|---|
 | `-data` | `KOLO_BOARD_DATA` | `<user config dir>/kolo-board` | the data directory (see below) |
-| `-bootstrap` | `KOLO_BOOTSTRAP` | none: the public network | the entry nodes of your own network, a comma list of `host:port` as for kolo-swarm's `ParseNodes`: IPv4 or a host name, at most 16. They are used alone. Settings shows the list in use and where it came from |
+| `-bootstrap` | `KOLO_BOOTSTRAP` | none: the public network | the entry nodes of your own network, a comma list of `host:port` as for kolo-swarm's `ParseNodes`: IPv4 or a host name. They are used alone. Settings shows the list in use and where it came from |
 | `-local` | `KOLO_BOARD_LOCAL` (`1`) | off | this computer only: the first window runs an entry node on `127.0.0.1:7451`, the others join it. Not with `-bootstrap` or `-first` |
 | `-first` | `KOLO_BOARD_FIRST` | none | run the first entry node of a test network on this loopback IP:PORT, such as `127.0.0.1:4000`, used with `-bootstrap` by the other copies. For local testing only |
 | `-listen` | `KOLO_BOARD_LISTEN` | `127.0.0.1:0` with `-local` or when every entry node is on loopback, else `0.0.0.0:0` | local IPv4 IP:PORT |
@@ -28,7 +28,7 @@ The example is on one of three networks, chosen when it starts:
 | `-relay` | `KOLO_BOARD_RELAYS` | none: no relay, and no public one | connection relays as `host:port@key`, the key as 64 hex characters; repeat it or give a comma list. The variable is read only when neither `-relay` nor `-relay-file` is given |
 | `-relay-file` | | none | a file of connection relays, one or more per line, `#` starts a comment; repeatable. A regular file of at most 64 KiB; one that cannot be read is reported as such |
 
-Kolo is IPv4 only: an IPv6 entry node, listen address or relay address is refused. The relays of the flags and files are one list of at most 16, with no key or address twice.
+Kolo is IPv4 only: an IPv6 entry node, listen address or relay address is refused. The relays of the flags and files are one list, with no key or address twice.
 
 ## Chosen in the window
 
@@ -36,7 +36,7 @@ The display name and the two notch settings are chosen in the window and saved i
 
 ## Settling
 
-The board uses kolo-braid's defaults for everything that decides settling: the quorum rule (Majority), at least 4 and at most 7 settlers, up to 64 members, entries of up to 1 MiB and a digest check every 1024 settled positions. They are not settings of the example.
+The board uses kolo-braid's defaults for everything that decides settling: the quorum rule (Majority), at least 4 and at most 7 settlers, any number of members, entries of up to 1 MiB and a digest check every 1024 settled positions. They are not settings of the example.
 
 ## Where data lives
 

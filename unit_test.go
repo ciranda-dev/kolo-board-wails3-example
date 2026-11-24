@@ -577,7 +577,7 @@ func TestSwarmConfig(t *testing.T) {
 		t.Fatal(err)
 	}
 	c := swarmConfig(set)
-	if c.LookupInterval != 7*time.Second || len(c.BootstrapNodes) != 1 || c.MaxTopics != swarmTopics || c.RetryMax != 7*time.Second {
+	if c.LookupInterval != 7*time.Second || len(c.BootstrapNodes) != 1 || c.MaxTopics != 0 || c.RetryMax != 7*time.Second {
 		t.Errorf("%+v", c)
 	}
 	if c.DHT == nil || c.DHT.Secure == nil || c.DHT.Secure.Transport == nil || c.DHT.Secure.Transport.MaxConnsPerIP != testMaxConnsPerIP {
@@ -586,13 +586,8 @@ func TestSwarmConfig(t *testing.T) {
 	// Without the seam the app keeps kolo-transport's default of 4 connections per source address, which bounds what a
 	// stranger's address can hold before it is a member.
 	testMaxConnsPerIP = 0
-	t.Cleanup(func() { testMaxConnsPerIP = defaultMaxMembers })
+	t.Cleanup(func() { testMaxConnsPerIP = testMaxConns })
 	if n := swarmConfig(set).DHT.Secure.Transport.MaxConnsPerIP; n != 0 {
 		t.Errorf("MaxConnsPerIP %d, want 0 (the library default)", n)
-	}
-	// the bounds the numbers must stay in: the topics of the board, a join and every invite fit the swarm's; a swarm and a
-	// transport with these limits start
-	if maxActiveInvites+2 > swarmTopics || swarmTopics > 32 {
-		t.Error("a limit is out of the range of the library that takes it")
 	}
 }

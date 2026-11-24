@@ -115,8 +115,12 @@ func TestRelaySettingSources(t *testing.T) {
 		e, _ := relayEntry(t, fmt.Sprintf("127.0.0.1:%d", 8000+i))
 		seventeen = append(seventeen, e)
 	}
-	if s, err = resolve([]string{"-relay", strings.Join(seventeen[:16], ",")}, nil); err != nil || len(s.relays) != 16 {
-		t.Errorf("16 relays: %d %v", len(s.relays), err)
+	// kolo-swarm has no cap on the relays, so no count is refused
+	if s, err = resolve([]string{"-relay", strings.Join(seventeen, ",")}, nil); err != nil || len(s.relays) != 17 {
+		t.Errorf("17 relays: %d %v", len(s.relays), err)
+	}
+	if s, err = resolve([]string{"-relay", strings.Join(seventeen[:16], ","), "-relay-file", file}, nil); err != nil || len(s.relays) != 17 {
+		t.Errorf("16 relays and a file: %d %v", len(s.relays), err)
 	}
 	key := hex.EncodeToString(ka)
 	other, _ := relayEntry(t, "127.0.0.1:7001")
@@ -136,8 +140,6 @@ func TestRelaySettingSources(t *testing.T) {
 		name, setting string
 		args          []string
 	}{
-		{"17 relays", "relay", []string{"-relay", strings.Join(seventeen, ",")}},
-		{"17 with a file", "relay-file", []string{"-relay", strings.Join(seventeen[:16], ","), "-relay-file", file}},
 		{"one key, two addresses", "relay", []string{"-relay", a, "-relay", strings.Replace(a, "7001", "7009", 1)}},
 		{"one address, two keys", "relay", []string{"-relay", a + "," + other}},
 		{"a flag and a file clash", "relay-file", []string{"-relay", a, "-relay-file", clash}},

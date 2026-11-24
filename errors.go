@@ -98,7 +98,6 @@ var reasons = map[string]struct{ kind, text string }{
 	"request-not-found":     {kindNotFound, "That request is gone: the person left or the invite ended."},
 	"reorder-no-room":       {kindLimit, "There is no room to put it there. Move it to the start or the end instead."},
 	"entry-too-large":       {kindLimit, "That is too large to send: {cause}."},
-	"too-many-invites":      {kindLimit, "You have {detail} active invites. Revoke one or wait for one to expire."},
 	"invite-ttl-range":      {kindLimit, "Choose how long the invite lasts: at least 1 second."},
 	"activity-limit":        {kindLimit, "Ask for at least 1 item."},
 	"invite-uses-range":     {kindLimit, "An invite takes 1 to {detail} people."},
